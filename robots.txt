@@ -1,3 +1,3 @@
 User-agent: *
-Sitemap: http://my-ghost-blog.com/sitemap.xml
+Sitemap: http://blog.rake-revelant.de/sitemap.xml
 Disallow: /ghost/
