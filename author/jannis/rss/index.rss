@@ -1,1 +1,46 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Jannis Rake-Revelant - My Utopia of IT Infrastructure and Automation</title><description>Jannis Rake-Revelant - My Utopia of IT Infrastructure and Automation</description><link>http://blog.rake-revelant.de/</link><generator>Ghost 0.5</generator><lastBuildDate>Tue, 17 Mar 2015 17:05:27 GMT</lastBuildDate><atom:link href="http://blog.rake-revelant.de/author/jannis/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>How this blog was created</title><description>&lt;p&gt;Much like &lt;a href="http://blog.docker.com/2015/03/why-i-love-docker-and-why-youll-love-it-too/"&gt;John Willis&lt;/a&gt; I love &lt;a href="https://www.docker.com/"&gt;Docker&lt;/a&gt;, so when I thought about creating my blog I went looking for a platform that already has a working docker container. A while ago I also discovered &lt;a href="https://ghost.org/"&gt;Ghost&lt;/a&gt; and, what do you know, found a corresponding post on &lt;a href="http://www.allaboutghost.com/deploying-ghost-with-docker/"&gt;Ghost in Docker&lt;/a&gt;&lt;/p&gt;</description><link>http://blog.rake-revelant.de/untitled/</link><guid isPermaLink="false">06cbf58f-e931-446a-88ce-8cd87e98c3c1</guid><dc:creator>Jannis Rake-Revelant</dc:creator><pubDate>Tue, 17 Mar 2015 14:36:23 GMT</pubDate></item></channel></rss>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Jannis Rake-Revelant - My Utopia of IT Infrastructure and Automation</title><description>Jannis Rake-Revelant - My Utopia of IT Infrastructure and Automation</description><link>http://blog.rake-revelant.de/</link><generator>Ghost 0.5</generator><lastBuildDate>Tue, 17 Mar 2015 18:37:05 GMT</lastBuildDate><atom:link href="http://blog.rake-revelant.de/author/jannis/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>How this blog was created</title><description>&lt;p&gt;Much like &lt;a href="http://blog.docker.com/2015/03/why-i-love-docker-and-why-youll-love-it-too/"&gt;John Willis&lt;/a&gt; I love &lt;a href="https://www.docker.com/"&gt;Docker&lt;/a&gt;, so when I thought about creating my blog I went looking for a platform that already has a working docker container. A while ago I also discovered &lt;a href="https://ghost.org/"&gt;Ghost&lt;/a&gt; and, what do you know, found a corresponding post on &lt;a href="http://www.allaboutghost.com/deploying-ghost-with-docker/"&gt;Ghost in Docker&lt;/a&gt;. &lt;/p&gt;
+
+&lt;h2 id="usingdockerforalocalghostsetup"&gt;Using docker for a local Ghost setup&lt;/h2&gt;
+
+&lt;p&gt;On OSX I use &lt;a href="http://boot2docker.io/"&gt;boot2docker&lt;/a&gt; so all I needed to do is pull the ghost container:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ docker pull dockerfile/ghost
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Also I wanted to make use of the shared folder capabilities of boot2docker (which uses VirtualBox in the background). So I started the container using the necessary overwrite command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ docker run -d -p 80:2368 -v /full/path/to/your/directory:/ghost-override dockerfile/ghost
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you don't know your boot2docker IP, simply type &lt;code&gt;boot2docker IP&lt;/code&gt;. Now you can access the local ghost platform at &lt;a href="http:///[boot2docker-IP]/ghost"&gt;http:///[boot2docker-IP]/ghost&lt;/a&gt;. You should see something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://blog.rake-revelant.de/content/images/2015/03/Bildschirmfoto-2015-03-17-um-18-46-31.png" alt="Ghost blogging platform initial setup"&gt;&lt;/p&gt;
+
+&lt;p&gt;After the intial setup you can blog away!&lt;/p&gt;
+
+&lt;h2 id="hostingtheblogongithubpages"&gt;Hosting the blog on Github Pages&lt;/h2&gt;
+
+&lt;p&gt;Free domain hosting is basically offered by &lt;a href="https://pages.github.com/"&gt;Github Pages&lt;/a&gt;. However, we need a way to create static pages and push them to the correct repository. Enter &lt;a href="https://github.com/axitkhurana/buster"&gt;Buster&lt;/a&gt;, a brute force static site generator for Ghost.&lt;/p&gt;
+
+&lt;p&gt;Buster is very easy to install (just make sure to use a &lt;a href="http://docs.python-guide.org/en/latest/dev/virtualenvs/"&gt;virtual environment&lt;/a&gt; so you don't burn in dependency hell):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ pip install buster
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After an initial setup&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ buster setup --gh-repo=https://github.com/[github-username]/[github-username].github.io.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;we can tell Buster to generate the static content for our blog and publish it to Github:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ buster generate --domain=http://[boot2docker-IP]/
+$ buster deploy
+
+Good job! Deployed to Github Pages.  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If necessary you can tell Buster that you are using a custom domain name:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ buster add-domain blog.example.com 
+&lt;/code&gt;&lt;/pre&gt;</description><link>http://blog.rake-revelant.de/untitled/</link><guid isPermaLink="false">06cbf58f-e931-446a-88ce-8cd87e98c3c1</guid><dc:creator>Jannis Rake-Revelant</dc:creator><pubDate>Tue, 17 Mar 2015 14:36:23 GMT</pubDate></item></channel></rss>
